@@ -1,0 +1,96 @@
+{
+  "source_notebook": "/Users/andrasikristof/Documents/Egyetem/2026:27 - 2. félév/Election_predictions/scripts/final_final_scripts/13_final_2026_forecast.ipynb",
+  "main_path": "simple_weighted_average",
+  "sensitivity_path": "house_effects_rw",
+  "additional_sensitivity_paths": [
+    "simple_weighted_average_poll_only"
+  ],
+  "fixed_election_day": "2026-04-12",
+  "generated_utc": "2026-04-15T10:10:34.325546+00:00",
+  "paths": {
+    "simple_weighted_average": {
+      "vote_share_pct": {
+        "gov": 43.1802,
+        "opp": 44.11,
+        "opp_radical": 7.0352,
+        "other": 5.6747
+      },
+      "point_seats": {
+        "gov": 102,
+        "opp": 89,
+        "opp_radical": 8
+      },
+      "expected_seats": {
+        "gov": 94.5267,
+        "opp": 90.6407,
+        "opp_radical": 13.8327
+      },
+      "probabilities_pct": {
+        "gov finishes first": 46.6,
+        "opp finishes first": 53.4,
+        "gov majority": 39.2667,
+        "gov two thirds": 1.0667,
+        "opp majority": 29.7333,
+        "opp two thirds": 1.4,
+        "parliament without gov majority": 60.7333,
+        "parliament without opp majority": 70.2667
+      }
+    },
+    "simple_weighted_average_poll_only": {
+      "vote_share_pct": {
+        "gov": 40.1243,
+        "opp": 48.6782,
+        "opp_radical": 5.5868,
+        "other": 5.6107
+      },
+      "point_seats": {
+        "gov": 83,
+        "opp": 110,
+        "opp_radical": 6
+      },
+      "expected_seats": {
+        "gov": 83.52,
+        "opp": 106.3873,
+        "opp_radical": 9.0927
+      },
+      "probabilities_pct": {
+        "gov finishes first": 18.9333,
+        "opp finishes first": 81.0667,
+        "gov majority": 18.7333,
+        "gov two thirds": 0.1333,
+        "opp majority": 64.3333,
+        "opp two thirds": 7.0667,
+        "parliament without gov majority": 81.2667,
+        "parliament without opp majority": 35.6667
+      }
+    },
+    "house_effects_rw": {
+      "vote_share_pct": {
+        "gov": 42.9808,
+        "opp": 44.6028,
+        "opp_radical": 7.7279,
+        "other": 4.6885
+      },
+      "point_seats": {
+        "gov": 97,
+        "opp": 93,
+        "opp_radical": 9
+      },
+      "expected_seats": {
+        "gov": 90.6533,
+        "opp": 92.1947,
+        "opp_radical": 16.152
+      },
+      "probabilities_pct": {
+        "gov finishes first": 46.6,
+        "opp finishes first": 53.2667,
+        "gov majority": 42.4,
+        "gov two thirds": 19.0667,
+        "opp majority": 42.9333,
+        "opp two thirds": 19.4,
+        "parliament without gov majority": 57.6,
+        "parliament without opp majority": 57.0667
+      }
+    }
+  }
+}
