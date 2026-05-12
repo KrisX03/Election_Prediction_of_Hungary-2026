@@ -1,100 +1,95 @@
-# Hungarian Election Predictions – Socio-Economic and Polling Analysis
-## Predictive modeling of parliamentary and EP elections
+# Forecasting the 2026 Hungarian Parliamentary Election
 
-This project was written for the TDK (Tudományos Diákköri Konferencia / Scientific Students' Associations Conference) at Corvinus University of Budapest.
+This repository accompanies my TDK research project at Corvinus University of Budapest. I forecast the 2026 Hungarian parliamentary election by combining polls, socio-economic fundamentals, online media consumption signals and Monte Carlo seat simulations. The repository contains the paper, the presentation materials, the data, the notebooks, the figures and the forecast outputs.
 
-### Author
-- Kristóf Andrási  
+## Recognition
 
+- **1st place** at TDK in the Network and Data Science session, awarded for the paper together with the oral presentation.
+- **Nominated for OTDK** (Országos Tudományos Diákköri Konferencia, the national student research competition).
+- **Nominated for Best Paper.**
 
----
+## Author
+
+Kristóf Andrási
+
+## Motivation
+
+I chose the 2026 Hungarian parliamentary election as the case study because it has now taken place. This allowed me to not only build a forecast but also evaluate it against the realised outcome. I also pre-registered the predictions before election day, so the exercise stands as a genuine out-of-sample test. The research question is straightforward. How can we combine information from polls and other sources to produce a good election forecast?
 
 ## Project overview
 
-This repository contains the data, analysis scripts, and modeling for a comprehensive study on **Hungarian election outcomes**, with a focus on forecasting the 2026 Hungarian parliamentary election (election day: 12 April 2026). The project predicts results at both the national and individual constituency (OEVK) levels by integrating three distinct data domains:
+The analysis covers the last two Hungarian parliamentary elections and the last two European Parliament elections for training and validation. It then delivers a pre-election forecast for the 2026 vote.
 
-1.  **Historical Election Results:** Detailed outcomes from 2018, 2019 (EP), 2022, and 2024 (EP).
-2.  **Socio-Economic Indicators:** Demographic, income, and employment data from the Hungarian Central Statistical Office (KSH).
-3.  **Online Audience Data:** Digital consumption patterns and reach statistics from Gemius Audience.
+- 2018 Hungarian parliamentary election
+- 2019 European Parliament election
+- 2022 Hungarian parliamentary election
+- 2024 European Parliament election
+- 2026 Hungarian parliamentary election forecast and post-election evaluation
 
-The objective is to identify which socio-economic factors (e.g. education, income, urbanization) and digital footprints most strongly correlate with party preferences and to build a predictive model for future electoral cycles.
+I work with political blocs rather than individual party labels, since the Hungarian party system has shifted across cycles. For 2026 the main bloc labels are government, opposition/TISZA, radical opposition/Mi Hazánk and other parties.
 
----
+For the full method, results and discussion I refer the reader to the paper and the presentation in `doc/`.
 
-## Important notes for users
+## Data sources
 
--   **Gemius data not included.** Due to licensing restrictions the raw Gemius Audience files cannot be redistributed. The `data/Gemius/` folder is therefore empty in this upload. Notebooks that use Gemius data (notably `03_media_usage.ipynb` and the media-related parts of `13_final_2026_forecast.ipynb`) will not run end-to-end without supplying this source separately.
--   **File paths may need to be adjusted.** The notebooks were written on a local machine and contain absolute or workspace-specific paths in some cells. Before running any notebook, check the file path variables at the top of the notebook and adapt them to your own directory layout.
--   **`data/created/` is empty.** This folder is the output target for cleaned and merged datasets produced by `01_data_preparation.ipynb`. It will be populated automatically the first time you run that notebook.
+The analysis draws on three main data domains.
 
----
+- **Election results and polls** come from Prof. Gábor Tóka, who has been collecting Hungarian polls since 2014. Stored under `data/TokaGabor/`.
+- **Socio-economic fundamentals** come from KSH and cover population, demographic structure, income, employment, CPI-related indicators and settlement-level statistics. Stored under `data/KSH/`.
+- **Online media usage** comes from Gemius and covers outlets such as Telex, Index, 24.hu, RTL and TV2. To classify outlets as government-aligned or opposition-aligned I rely on ÁTLÁTSZÓ.HU's data on government financing of the press.
 
-## Data
+## Important notes
 
-The project uses a multi-layered dataset compiled from several primary sources:
+- **Raw Gemius data is not included.** Due to licensing restrictions `data/Gemius/` is empty in this upload. `03_media_usage.ipynb` and the media-related parts of `13_final_2026_forecast.ipynb` require those files to run end to end.
+- **Generated data is not included.** `data/created/` is empty and is populated when `01_data_preparation.ipynb` is run.
+- **Some paths may need adjustment.** I developed the notebooks locally, so some cells may contain absolute or workspace-specific paths.
+- **The transcript is AI-generated.** `doc/presentation_transcript_AI.pdf` is an AI transcript of my oral TDK presentation and is included as supporting documentation.
 
--   **Tóka Gábor / Vox Populi:** Historical election results (2018–2024) at the settlement, OEVK, and polling station levels, including pre-election polls. Located in `data/TokaGabor/`.
--   **KSH (Központi Statisztikai Hivatal):** Located in `data/KSH/`.
-    -   Population counts by district (járás) and constituency.
-    -   Socio-economic indicators: CPI (via World Bank mirror), employment rates, education levels and per capita income.
-    -   Settlement-level statistical yearbooks (2016–2024).
--   **Gemius Audience:** Online audience reach and demographic data for Hungary (2022–2024), used as a proxy for regional interest and digital engagement. Not included in this repository (see notes above).
--   **Processed data:** Cleaned versions of the above are generated into `data/created/` by the data preparation notebook.
+## Method overview
 
----
-
-## Methods
-
-The analytical pipeline follows a standard data science lifecycle:
-
-### 1. Data Preparation & Integration
--   Merging different Excel and RData files into a unified daily and yearly panel.
--   Mapping KSH settlement-level statistics to the 106 Individual Electoral Constituencies (OEVK).
--   Cleaning and normalising polling data from various agencies to make them comparable.
-
-### 2. Exploratory Analysis
--   Distribution analysis of voting patterns across the 106 constituencies.
--   Correlation mapping between KSH socio-economic variables and party performance.
--   Comparison with international forecasting methodologies (The Economist, Harvard, Zurich Uni) used to benchmark the approach.
-
-### 3. Predictive Modeling
--   A 5-layer pipeline combining a national poll model, a structural fundamentals prior (Ridge regression on district demographics), a poll-plus-fundamentals combination, a district lean model, and a seat simulation step (block-level compensation vote approximation plus D'Hondt, 1500 Monte Carlo draws).
--   Two parallel paths for the national poll layer: a sample-weighted 60-day average and a house-effects plus Kalman random-walk filter.
--   Validation against historical 2018, 2019, 2022 and 2024 results to test model accuracy.
-
----
+From the polls and from the demographic fundamentals I derive a national list share prediction. From the district lean model I obtain district level list shares. From the candidate gap model I obtain individual candidate vote shares. I then translate these vote predictions into seats under Hungary's mixed electoral system (106 single member district seats and 93 national list seats allocated by the D'Hondt rule) and quantify uncertainty with 1,500 Monte Carlo draws. All tuning and model selection was validated through Leave-One-Election-Out (LOEO) cross-validation. The paper in `doc/` provides the full specification.
 
 ## Repository structure
 
 ```text
 .
 ├── data/
-│   ├── created/                    # Cleaned & merged datasets (populated by 01_data_preparation.ipynb)
-│   ├── KSH/                        # Socio-economic data (population, income, CPI, employment)
-│   │   ├── cpi_worldbank/
-│   │   ├── telepules_szintu/       # Settlement-level yearbooks (2016–2024)
-│   │   └── teruleti_munkval_jov/
-│   ├── TokaGabor/
-│   │   ├── Nyers_adatok/           # Raw poll database and documentation
-│   │   └── Választási_eredmények/  # Historical election results (2018–2024)
-│   └── Gemius/                     # Empty – source files cannot be redistributed
-├── final_final_scripts/
-│   ├── 01_data_preparation.ipynb       # Cleaning, merging and KSH-to-OEVK mapping
-│   ├── 02_exploratory_analysis.ipynb   # Visualisations and descriptive statistics
-│   ├── 03_media_usage.ipynb            # Gemius-based media reach analysis (needs Gemius data)
-│   ├── 12_fixed_params_LOEO.ipynb      # LOEO validation with fixed parameters
-│   ├── 13_final_2026_forecast.ipynb    # Full pipeline, main forecasting notebook
-│   ├── 13_final_2026_forecast_export.json  # Exported 2026 forecast numbers
-│   ├── 14_final_results.ipynb          # Post-election comparison and accuracy
-│   └── palette_variations_preview.html # Colour palette preview for figures
-├── graphs_tables/                  # Output figures (.png) and LaTeX tables (.tex)
-├── doc/                            # Written outputs and slide decks (PDF)
+│   ├── created/                    # Generated cleaned datasets. Empty until notebooks are run.
+│   ├── Gemius/                     # Empty. Raw Gemius data cannot be redistributed.
+│   ├── KSH/                        # Socio-economic and settlement-level data
+│   └── TokaGabor/                  # Polls and historical election results
+├── doc/
 │   ├── Election_Forecast_Kristof_Andrasi.pdf
 │   ├── Pre-Election Forecast Kristof Andrasi.pdf
 │   ├── FINAL_TDK_Corvinus_PPT_2026.pdf
 │   └── presentation_transcript_AI.pdf
+├── final_final_scripts/
+│   ├── 01_data_preparation.ipynb
+│   ├── 02_exploratory_analysis.ipynb
+│   ├── 03_media_usage.ipynb
+│   ├── 12_fixed_params_LOEO.ipynb
+│   ├── 13_final_2026_forecast.ipynb
+│   ├── 13_final_2026_forecast_export.json
+│   └── 14_final_results.ipynb
+├── graphs_tables/                  # Generated figures and LaTeX tables
 └── README.md
 ```
 
-### Licence
-MIT License (MIT): see the [License File](https://github.com/sensiolabs/GotenbergBundle/blob/1.x/LICENSE) for more details.
+## Main notebooks
+
+- `01_data_preparation.ipynb`. Cleans, harmonises and merges the source data.
+- `02_exploratory_analysis.ipynb`. Explores historical election patterns and socio-economic correlations.
+- `03_media_usage.ipynb`. Builds media usage indicators from Gemius data.
+- `12_fixed_params_LOEO.ipynb`. Runs Leave-One-Election-Out validation with fixed parameters.
+- `13_final_2026_forecast.ipynb`. Main pre-election forecasting notebook.
+- `14_final_results.ipynb`. Post-election comparison and accuracy evaluation.
+
+## Outputs
+
+- Forecast export. `final_final_scripts/13_final_2026_forecast_export.json`
+- Figures and tables. `graphs_tables/`
+- Paper and presentation PDFs. `doc/`
+
+## License
+
+No license file is included in this upload. Before reusing or redistributing the code or data, please add an explicit license and respect the licensing terms of the original data providers.
