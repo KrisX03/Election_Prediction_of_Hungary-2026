@@ -90,6 +90,5 @@ From the polls and from the demographic fundamentals I derive a national list sh
 - Figures and tables. `graphs_tables/`
 - Paper and presentation PDFs. `doc/`
 
-## License
-
-No license file is included in this upload. Before reusing or redistributing the code or data, please add an explicit license and respect the licensing terms of the original data providers.
+## Licence
+MIT License (MIT): see the [License File](https://github.com/sensiolabs/GotenbergBundle/blob/1.x/LICENSE) for more details.
